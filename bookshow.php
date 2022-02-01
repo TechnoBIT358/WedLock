@@ -1,0 +1,146 @@
+<?php
+session_start();
+$us=$_SESSION['u'];
+
+if($_SESSION['sidu']!=session_id())
+{
+header("location:login.php");
+}
+?>
+<html lang="en">
+  <head><title>Customer Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+.h{text-align:center;background-color:gray;line-height:30px;left:30%;width:40%;position:absolute;
+}
+.r{text-align:center;background-color:rgb(193,193,255,0.5);
+border-style:solid;margin:20px;
+}
+.rh{text-align:center;
+border-style:solid;margin:20px;
+}
+
+.a{color:white; line-height:3;}
+
+#r1{text-align:center;background-color:rgba(8,8,8,0.4);
+border-style:solid;margin:20px;position fixed;height:55%;width:80%;
+}
+#r11{right:0%;top:38%;height:55%;width:50%;position:absolute;visibility:visible;}
+#c{ background-color:rgba(216,10,102,1); color:white; border-radius:5px; border:none;}
+#d{border-radius:5px; color:rgba(216,10,102,1)}
+</style>
+</head>
+<body background="d.jpeg" height="100%" width="100%">
+
+  <div class="container-fluid" style="border:none;">
+  <nav class="navbar " style="background-color:rgba(216,10,102,1);">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-left">
+        
+        <li><a href="index.php"><font color="white">HOME</a></font></li>
+		<li><a href="showusernew.php"><font color="white">MY PROFILE</a></font></li>
+        <li><a href="updateuser2.php"><font color="white">EDIT PROFILE</a></font></li>
+        <li><a href="bookven.php"><font color="white">BOOK VENDOR</a></font></li>
+        <li><a href="bookshow.php"><font color="white">SHOW BOOKING</a></font></li>
+	   </ul>
+	  <ul class="nav navbar-nav navbar-right">
+	  
+        <li><a href="logout.php"><font color="white"><span class="glyphicon glyphicon-log-out"></span></font> <font color="white">Logout</a></font></li>
+		
+        </ul>
+    </div>
+	</nav>
+	
+  </div>
+<?php
+echo'<div class="row">';
+			echo'<div class="col-md-3 col-md-offset-4">';
+			 echo'<div id="rh">';
+			 echo"<center><font size=5 color='white'><b>WELCOME:'".$us."'</b></font></center>";
+			 echo'</div>';
+			 echo'</div>';
+			 echo'</div>';
+			 
+            
+	include"dbcon.php";
+
+  $sh1="select * from booking where uemail ='".$us."'";
+ $si1=mysqli_query($cnt,$sh1);
+  if($si1)                                                                                        
+  {
+	  if(mysqli_fetch_row($si1)>0)
+		{
+            echo'<div class="row">';
+			echo'<div class="col-md-3 col-md-offset-4">';
+			 echo'<div id="rh">';
+			 echo'<center><font size=5 color="white"><b>BOOKINGS DONE:</b></font></center>';
+			 echo'</div>';
+			 echo'</div>';
+			 echo'</div>';
+			 
+			 
+			$si1=mysqli_query($cnt,$sh1);
+	
+			 while($r=mysqli_fetch_row($si1))
+			 {
+				 echo'<div class="col-md-3">';
+			 echo'<div id="r1">';
+			
+			 echo'<br><br>';
+			 echo'<div class="a">BOOK CODE = '.$r[0].'</div>';
+			 echo'<div class="a">DATE= '.$r[1].'</div>';
+			 echo'<div class="a">VENDOR EMAIL= '.$r[2].'</div>';
+			 echo'<div class="a">SERVICE= '.$r[4].'</div>';
+			 echo'<div class="a">RATE= '.$r[5].'</div>';
+			 echo'<div class="a">CITY= '.$r[6].'</div>';
+			 
+			 echo'</div>';
+			 echo'</div>';
+			 echo'</div>';
+			
+			 }
+			 
+			echo'</div>';
+			echo'</div>';
+			
+			 }
+		else
+			{
+			echo" no bookings done yet";
+			}
+  }
+  
+		
+  else                                 
+  {
+	echo "error".mysqli_error($cnt);
+  }
+  $si1=mysqli_query($cnt,$sh1);
+			echo'<form action="cancelbook.php" method="POST">';
+	echo'<br><br><font color="white" size="4"><B>SELECT BOOK CODE</font> </B>&nbsp&nbsp&nbsp&nbsp<select name="au" id="d">';
+			while($r=mysqli_fetch_row($si1))
+			{
+			echo '<option value="'.$r[0].'">'.$r[0].'</option>';
+			
+			}
+			echo'</select>';
+			echo'&nbsp&nbsp&nbsp&nbsp<input type="submit" name="del" value="CANCEL BOOKING" id="c">';
+			echo'<br></form>';
+
+?>
+</body>
+</html>
+
+
+
